@@ -17,8 +17,7 @@ defaults:
       type: "content"
     values:
       layout: default
-  - site:
-      url: gemma-zaken
+
 
 markdown: kramdown
 
@@ -33,5 +32,7 @@ plugins:
 remote_theme: michielverhoef/jekyll-theme-vng
 
 github: michielverhoef/prut
+
+repos: prut
 
 theme: jekyll-theme-time-machine
