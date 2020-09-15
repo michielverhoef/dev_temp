@@ -17,6 +17,8 @@ defaults:
       type: "content"
     values:
       layout: default
+  - site:
+      url: gemma-zaken
 
 markdown: kramdown
 
