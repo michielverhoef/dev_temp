@@ -9,7 +9,129 @@ servers:
     url: https://www.voorbeeldgemeente.nl/api/catalogi_api/v1
 info:
   title: Catalogi API
-  description: "<body><p>Een API om een Catalogi API (ZTC) te benaderen. De Catalogi API helpt gemeenten om het proces vanuit de ''vraag van een klant'' (productaanvraag, melding, aangifte, informatieverzoek e.d.) tot en met het leveren van een passend antwoord daarop in te richten, inclusief de bijbehorende informatievoorziening. Een CATALOGUS bestaat uit ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn en wordt typisch gebruikt om een ZAAK (in de Zaken API), INFORMATIEOBJECT (in de Documenten API) en BESLUIT (in de Besluiten API) te voorzien van type, standaardwaarden en processtructuur. **Afhankelijkheden** Deze API is afhankelijk van: * Gemeentelijke Selectielijst API * Autorisaties API *(optioneel)* **Autorisatie** Deze API vereist autorisatie. Je kan de [token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te genereren. ### Notificaties Deze API publiceert notificaties op het kanaal `zaaktypen`. **Main resource** `zaaktype` **Kenmerken** * `catalogus`: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort. **Resources en acties** - `zaaktype`: create, update, destroy Deze API publiceert notificaties op het kanaal `besluittypen`. **Main resource** `besluittype` **Kenmerken** * `catalogus`: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort. **Resources en acties** - `besluittype`: create, update, destroy Deze API publiceert notificaties op het kanaal `informatieobjecttypen`. **Main resource** `informatieobjecttype` **Kenmerken** * `catalogus`: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE behoort. **Resources en acties** - `informatieobjecttype`: create, update, destroy **Handige links** * [Documentatie](https://vng-realisatie.github.io/gemma-zaken/standaard/) * [Zaakgericht werken](https://vng-realisatie.github.io/gemma-zaken/)</p></body>"
+  description: 'Een API om een Catalogi API (ZTC) te benaderen.
+
+
+    De Catalogi API helpt gemeenten om het proces vanuit de ''vraag van een
+
+    klant'' (productaanvraag, melding, aangifte, informatieverzoek e.d.) tot en met
+
+    het leveren van een passend antwoord daarop in te richten, inclusief de
+
+    bijbehorende informatievoorziening.
+
+
+    Een CATALOGUS bestaat uit ZAAKTYPEn, INFORMATIEOBJECTTYPEn en BESLUITTYPEn en
+
+    wordt typisch gebruikt om een ZAAK (in de Zaken API), INFORMATIEOBJECT (in de
+
+    Documenten API) en BESLUIT (in de Besluiten API) te voorzien van type,
+
+    standaardwaarden en processtructuur.
+
+
+    **Afhankelijkheden**
+
+
+    Deze API is afhankelijk van:
+
+
+    * Gemeentelijke Selectielijst API
+
+    * Autorisaties API *(optioneel)*
+
+
+    **Autorisatie**
+
+
+    Deze API vereist autorisatie. Je kan de
+
+    [token-tool](https://zaken-auth.vng.cloud/) gebruiken om JWT-tokens te
+
+    genereren.
+
+
+    ### Notificaties
+
+
+    Deze API publiceert notificaties op het kanaal `zaaktypen`.
+
+
+    **Main resource**
+
+
+    `zaaktype`
+
+
+
+
+    **Kenmerken**
+
+
+    * `catalogus`: URL-referentie naar de CATALOGUS waartoe dit ZAAKTYPE behoort.
+
+
+    **Resources en acties**
+
+    - `zaaktype`: create, update, destroy
+
+
+
+    Deze API publiceert notificaties op het kanaal `besluittypen`.
+
+
+    **Main resource**
+
+
+    `besluittype`
+
+
+
+
+    **Kenmerken**
+
+
+    * `catalogus`: URL-referentie naar de CATALOGUS waartoe dit BESLUITTYPE behoort.
+
+
+    **Resources en acties**
+
+    - `besluittype`: create, update, destroy
+
+
+
+    Deze API publiceert notificaties op het kanaal `informatieobjecttypen`.
+
+
+    **Main resource**
+
+
+    `informatieobjecttype`
+
+
+
+
+    **Kenmerken**
+
+
+    * `catalogus`: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
+    behoort.
+
+
+    **Resources en acties**
+
+    - `informatieobjecttype`: create, update, destroy
+
+
+
+    **Handige links**
+
+
+    * [Documentatie](https://vng-realisatie.github.io/gemma-zaken/standaard/) 
+    
+    * [Zaakgericht werken](https://vng-realisatie.github.io/gemma-zaken/)
+    
+    '
   version: "1.2.0-alpha"
   x-imvertor-generator-version: "1.64.2"
   x-yamlCompiler-stylesheets-version: "20210605"
