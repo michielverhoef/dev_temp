@@ -4003,7 +4003,7 @@ paths:
             type: integer
         - in: query
           name: richting
-          description: "<body><p>Aanduiding van de richting van uitwisseling van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE, gezien vanuit de zaakbehandelende organisatie.</p></body>"
+          description: "<body><p>**Deprecated** Aanduiding van de richting van uitwisseling van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE, gezien vanuit de zaakbehandelende organisatie.</p></body>"
           required: false
           schema:
             $ref: "#/components/schemas/Richting"
@@ -7647,7 +7647,7 @@ components:
       - "jaar"
     Richting:
       type: "string"
-      description: "<body><p>Opsomming van de onderscheiden richtingen van uitwisseling\
+      description: "<body><p>**Deprecated** Opsomming van de onderscheiden richtingen van uitwisseling\
         \ van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken\
         \ van het gerelateerde ZAAKTYPE, gezien vanuit de zaakbehandelende organisatie..</p></body>"
       enum:
