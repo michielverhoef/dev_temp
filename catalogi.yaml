@@ -1,5 +1,8 @@
 openapi: 3.0.0
 servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/michielverhoef/Catalogussen_API/1.2.0-alpha
   - description: "SwaggerHub API Auto Mocking"
     url: https://virtserver.swaggerhub.com/VNGRealisatie/api/catalogi_api/v1
   - description: "Referentie-implementatie"
@@ -16,12 +19,21 @@ info:
   license:
     name: European Union Public License, version 1.2 (EUPL-1.2)
     url: https://eupl.eu/1.2/nl/
+security:
+- JWT-Claims: []    
 paths:
   /besluittypen:
     get:
       operationId: besluittype_list
-      description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van een collectie Besluittypen retourneert.</p></body>"
+      summary: Alle BESLUITTYPEn opvragen.      
+      description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van een collectie Besluittypen retourneert. Deze lijst kan gefilterd wordt met query-string parameters.</p></body>"
       parameters: 
+        - name: zaaktypes
+          in: query
+          description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
+          required: false
+          schema:
+            type: string      
         - in: query
           name: besluitcategorie
           description: "<body><p>Typering van de aard van BESLUITen van het BESLUITTYPE.</p></body>"
@@ -75,18 +87,6 @@ paths:
           schema:
             type: integer
         - in: query
-          name: publicatie-indicatie
-          description: "<body><p>Aanduiding of BESLUITen van dit BESLUITTYPE gepubliceerd moeten worden.</p></body>"
-          required: false
-          schema:
-            type: boolean
-        - in: query
-          name: publicatietekst
-          description: "<body><p>De generieke tekst van de publicatie van BESLUITen van dit BESLUITTYPE</p></body>"
-          required: false
-          schema:
-            type: string
-        - in: query
           name: publicatietermijn
           description: "<body><p>Het aantal dagen, gerekend vanaf de verzend- of publicatiedatum, dat BESLUITen van dit BESLUITTYPE gepubliceerd moeten blijven.</p></body>"
           required: false
@@ -110,13 +110,6 @@ paths:
           required: false
           schema:
             type: string
-        - in: query
-          name: zaaktypen
-          description: "<body><p>ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE</p></body>"
-          required: false
-          schema:
-            type: string
-            format: uri
       responses:
         '200':
           description: "Zoekactie geslaagd"
@@ -134,9 +127,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Besluittype'
+                $ref: '#/components/schemas/ResultsBesluittype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -161,8 +152,12 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: besluittype_create
+      summary: Maak een BESLUITTYPE aan.
       description: "<body><p>Het vastleggen van een Besluittype</p></body>"
       requestBody:
         content:
@@ -193,6 +188,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -211,9 +208,13 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /besluittypen/{uuid}:
     delete:
       operationId: besluittype_delete
+      summary: Verwijder een BESLUITTYPE.      
       description: "<body><p>Het bericht dat de JSON/REST API voor het verwijderen van gegevens van een Besluittype</p></body>"
       parameters: 
         - in: path
@@ -232,12 +233,46 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"          
       tags: 
       - Besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     get:
-      operationId: besluittype_read
+      operationId: besluittype_rea
+      summary: Een specifiek BESLUITTYPE opvragen.      
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Besluittype retourneert.</p></body>"
       parameters: 
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: "<body><p>Unieke resource identifier (UUID4)</p></body>"
@@ -248,6 +283,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -270,6 +311,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -288,8 +331,12 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     patch:
       operationId: besluittype_partial_update
+      summary: Werk een BESLUITTYPE deels bij.
       description: "<body><p>Het deels bijwerken van een Besluittype</p></body>"
       parameters: 
         - in: path
@@ -327,6 +374,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -345,8 +396,12 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     put:
       operationId: besluittype_update
+      summary: Werk een BESLUITTYPE in zijn geheel bij.
       description: "<body><p>Het bijwerken van een Besluittype</p></body>"
       parameters: 
         - in: path
@@ -384,6 +439,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -402,11 +461,32 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Besluittypen
-  /besluittypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
+    head:
       operationId: besluittype_headers
+      summary: De headers voor een specifiek(e) BESLUITTYPE opvragen
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van headergegevens van een besluittype.</p></body>"
       parameters: 
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: "<body><p>Unieke resource identifier (UUID4)</p></body>"
@@ -417,6 +497,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -457,9 +543,13 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
   /besluittypen/{uuid}/publish:
     post:
       operationId: besluittype_publish
+      summary: 'Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten API.'
       description: "<body><p>Opvragen en bewerken van BESLUITTYPEn nodig voor BESLUITEN in de Besluiten API. Alle BESLUITTYPEn van de besluiten die het resultaat kunnen zijn van het zaakgericht werken van de behandelende organisatie(s).</p></body>"
       parameters: 
         - in: path
@@ -515,11 +605,15 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Besluittypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven  
   /catalogussen:
     get:
       operationId: catalogus_list
+      summary: Alle CATALOGUSsen opvragen.
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van een collectie Catalogussen retourneert.</p></body>"
-      parameters: 
+      parameters:
         - in: query
           name: domein
           description: "<body><p>Een afkorting waarmee wordt aangegeven voor welk domein in een CATALOGUS ZAAKTYPEn zijn uitgewerkt.</p></body>"
@@ -569,9 +663,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Catalogus'
+                $ref: '#/components/schemas/ResultsCatalogus'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -596,8 +688,12 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     post:
       operationId: catalogus_create
+      summary: Maak een CATALOGUS aan.
       description: "<body><p>Het vastleggen van een Catalogus</p></body>"
       requestBody:
         content:
@@ -628,6 +724,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -646,9 +744,13 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /catalogussen/{uuid}:
     delete:
       operationId: catalogus_delete
+      summary: Verwijder een CATALOGUS.
       description: "<body><p>Het bericht dat de JSON/REST API voor het verwijderen van gegevens van een Catalogus</p></body>"
       parameters: 
         - in: path
@@ -667,12 +769,43 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Catalogussen
     get:
       operationId: catalogus_read
+      summary: Een specifieke CATALOGUS opvragen.
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Catalogus retourneert.</p></body>"
       parameters: 
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: "<body><p>Unieke resource identifier (UUID4)</p></body>"
@@ -683,6 +816,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -705,6 +844,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"                    
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -723,8 +864,12 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     patch:
       operationId: catalogus_partial_update
+      summary: Werk een CATALOGUS deels bij.
       description: "<body><p>Het (deels) bijwerken van een Catalogus</p></body>"
       parameters: 
         - in: path
@@ -762,6 +907,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -780,8 +929,12 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven       
     put:
       operationId: catalogus_update
+      summary: Werk een CATALOGUS bij.
       description: "<body><p>Het wijzigen van een Catalogus</p></body>"
       parameters: 
         - in: path
@@ -819,6 +972,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -837,11 +994,32 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Catalogussen
-  /catalogussen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven       
+    head:
       operationId: catalogus_headers
-      description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Catalogus retourneert.</p></body>"
-      parameters: 
+      summary: De headers voor een specifiek(e) CATALOGUS opvragen
+      description: "<body><p>Vraag de headers op die je bij een GET request zou krijgen.</p></body>"
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: "<body><p>Unieke resource identifier (UUID4)</p></body>"
@@ -852,6 +1030,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -892,9 +1076,13 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Catalogussen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
   /eigenschappen:
     get:
       operationId: eigenschap_list
+      summary: Alle EIGENSCHAPpen opvragen.      
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van een collectie Eigenschappen retourneert.</p></body>"
       parameters: 
         - in: query
@@ -934,9 +1122,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Eigenschap'
+                  $ref: '#/components/schemas/ResultsEigenschap'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -961,8 +1147,12 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     post:
       operationId: eigenschap_create
+      summary: Maak een EIGENSCHAP aan.
       description: "<body><p>Het vastleggen van een Eigenschap</p></body>"
       requestBody:
         content:
@@ -993,6 +1183,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1011,10 +1203,14 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /eigenschappen/{uuid}:
     delete:
       operationId: eigenschap_delete
-      description: "<body><p>Het bericht dat de JSON/REST API voor het verwijderen van gegevens van een Eigenschap</p></body>"
+      summary: Verwijder een EIGENSCHAP.      
+      description: 'Verwijder een EIGENSCHAP. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.'
       parameters: 
         - in: path
           name: uuid
@@ -1030,13 +1226,117 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"                    
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     get:
       operationId: eigenschap_read
+      summary: Een specifieke EIGENSCHAP opvragen.
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Eigenschap retourneert.</p></body>"
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
+        - in: path
+          name: uuid
+          description: ""
+          required: true
+          schema:
+            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/UUID"
+      responses:
+        '200':
+          description: "Zoekactie geslaagd"
+          headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
+            api-version:
+              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            warning:
+              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
+            X-Rate-Limit-Limit:
+              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/X_Rate_Limit_Limit"
+            X-Rate-Limit-Remaining:
+              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/X_Rate_Limit_Remaining"
+            X-Rate-Limit-Reset:
+              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/X_Rate_Limit_Reset"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Eigenschap'
+        '400':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
+        '501':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/501"
+        '503':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/503"
+        'default':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
+      tags: 
+      - Eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
+    patch:
+      operationId: eigenschap_partial_update
+      summary: Werk een EIGENSCHAP deels bij.
+      description: 'Werk een EIGENSCHAP deels bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft.'
       parameters: 
         - in: path
           name: uuid
@@ -1044,6 +1344,11 @@ paths:
           required: true
           schema:
             $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/UUID"
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/EigenschapRequestBody'
       responses:
         '200':
           description: "Zoekactie geslaagd"
@@ -1070,6 +1375,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1088,66 +1395,13 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Eigenschappen
-    patch:
-      operationId: eigenschap_partial_update
-      description: "<body><p>Het deels bijwerken van een Eigenschap</p></body>"
-      parameters: 
-        - in: path
-          name: uuid
-          description: ""
-          required: true
-          schema:
-            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/UUID"
-      requestBody:
-        content:
-          application/json:
-            schema:
-                $ref: '#/components/schemas/EigenschapRequestBody'
-      responses:
-        '200':
-          description: "Zoekactie geslaagd"
-          headers:
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
-            warning:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
-            X-Rate-Limit-Limit:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/X_Rate_Limit_Limit"
-            X-Rate-Limit-Remaining:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/X_Rate_Limit_Remaining"
-            X-Rate-Limit-Reset:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/X_Rate_Limit_Reset"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Eigenschap'
-        '400':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
-        '401':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
-        '403':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
-        '409':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
-        '410':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
-        '415':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
-        '429':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
-        '500':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
-        '501':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/501"
-        '503':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/503"
-        'default':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
-      tags: 
-      - Eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     put:
       operationId: eigenschap_update
-      description: "<body><p>Het bijwerken van een Eigenschap</p></body>"
+      summary: Werk een EIGENSCHAP in zijn geheel bij.
+      description: "Werk een EIGENSCHAP in zijn geheel bij. Dit kan alleen als het bijbehorende ZAAKTYPE een concept betreft."
       parameters: 
         - in: path
           name: uuid
@@ -1184,6 +1438,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1202,11 +1460,32 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Eigenschappen
-  /eigenschappen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
+    head:
       operationId: eigenschap_headers
-      description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van header gegevens van een Eigenschap retourneert.</p></body>"
-      parameters: 
+      summary: De headers voor een specifiek(e) EIGENSCHAP opvragen      
+      description: "Vraag de headers op die je bij een GET request zou krijgen"
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -1217,6 +1496,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -1257,6 +1542,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Eigenschappen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
   /informatieobjecttypen:
     get:
       operationId: informatieobjecttype_list
@@ -1298,9 +1586,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Informatieobjecttype'
+                $ref: '#/components/schemas/ResultsInformatieobjecttype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -1325,6 +1611,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     post:
       operationId: informatieobjecttype_create
       description: "<body><p>Het vastleggen van een Besluittype</p></body>"
@@ -1357,6 +1646,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1375,6 +1666,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /informatieobjecttypen/{uuid}:
     delete:
       operationId: informatieobjecttype_delete
@@ -1394,14 +1688,51 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"                    
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     get:
       operationId: informatieobjecttype_read
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Informatieobjecttype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -1412,6 +1743,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -1434,6 +1771,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"                    
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1452,6 +1791,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     patch:
       operationId: informatieobjecttype_partial_update
       description: "<body><p>Het bijwerken van een Informatieobjecttype</p></body>"
@@ -1491,6 +1833,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1509,6 +1855,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     put:
       operationId: informatieobjecttype_update
       description: "<body><p>Het bijwerken van een Informatieobjecttype</p></body>"
@@ -1548,6 +1897,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1566,11 +1919,31 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Informatieobjecttypen
-  /informatieobjecttypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
+    head:
       operationId: informatieobjecttype_headers
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van headergegevens van een Informatieobjecttype .</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -1581,6 +1954,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -1621,6 +2000,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
   /informatieobjecttypen/{uuid}/publish:
     post:
       operationId: informatieobjecttype_publish
@@ -1661,6 +2043,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1679,6 +2063,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Informatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /resultaattypen:
     get:
       operationId: resultaattype_list
@@ -1720,9 +2107,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Resultaattype'
+                $ref: '#/components/schemas/ResultsResultaattype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -1747,6 +2132,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     post:
       operationId: resultaattype_create
       description: "<body><p>Het vastleggen van een Besluittype</p></body>"
@@ -1779,6 +2167,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1797,6 +2187,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /resultaattypen/{uuid}:
     delete:
       operationId: resultaattype_delete
@@ -1816,14 +2209,51 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"                    
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven       
     get:
       operationId: resultaattype_read
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Catalogus retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -1834,6 +2264,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -1856,6 +2292,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"                    
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1874,6 +2312,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     patch:
       operationId: resultaattype_partial_update
       description: "<body><p>Het (deels) bijwerken van een Resultaattype</p></body>"
@@ -1913,6 +2354,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1931,6 +2376,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     put:
       operationId: resultaattype_update
       description: "<body><p>Het bijwerken van een Resultaattype</p></body>"
@@ -1970,6 +2418,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -1988,11 +2440,31 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Resultaattypen
-  /resultaattypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
+    head:
       operationId: resultaattype_headers
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van headergegevens van een Resultaattype.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -2003,6 +2475,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -2043,6 +2521,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Resultaattypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen       
   /roltypen:
     get:
       operationId: roltype_list
@@ -2102,9 +2583,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Roltype'
+                $ref: '#/components/schemas/ResultsRoltype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -2129,6 +2608,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     post:
       operationId: roltype_create
       description: "<body><p>Het vastleggen van een Roltype</p></body>"
@@ -2161,6 +2643,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2179,6 +2663,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /roltypen/{uuid}:
     delete:
       operationId: roltype_delete
@@ -2198,14 +2685,51 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"                    
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     get:
       operationId: roltype_read
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Roltype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -2216,6 +2740,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -2238,6 +2768,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2256,6 +2788,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     patch:
       operationId: roltype_partial_update
       description: "<body><p>Het deels bijwerken van een Roltype</p></body>"
@@ -2295,6 +2830,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2313,6 +2852,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     put:
       operationId: roltype_update
       description: "<body><p>Het bijwerken van een Roltype</p></body>"
@@ -2352,6 +2894,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2370,11 +2916,31 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Roltypen
-  /roltypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
+    head:
       operationId: roltype_headers
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Roltype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -2385,6 +2951,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -2425,6 +2997,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Roltypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
   /statustypen:
     get:
       operationId: statustype_list
@@ -2466,9 +3041,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Statustype'
+                  $ref: '#/components/schemas/ResultsStatustype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -2493,6 +3066,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
     post:
       operationId: statustype_create
       description: "<body><p>Het vastleggen van een Besluittype</p></body>"
@@ -2525,6 +3101,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2543,6 +3121,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
   /statustypen/{uuid}:
     delete:
       operationId: statustype_delete
@@ -2562,14 +3143,51 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"                    
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven       
     get:
       operationId: statustype_read
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Roltype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -2580,6 +3198,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -2602,6 +3226,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2620,6 +3246,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     patch:
       operationId: statustype_partial_update
       description: "<body><p>Het bijwerken van een Besluittype</p></body>"
@@ -2659,6 +3288,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2677,6 +3310,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     put:
       operationId: statustype_update
       description: "<body><p>Het bijwerken van een Resultaattype</p></body>"
@@ -2716,6 +3352,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2734,11 +3374,31 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Statustypen
-  /statustypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
+    head:
       operationId: statustype_headers
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Statustype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -2749,6 +3409,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -2789,6 +3455,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Statustypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
   /zaakobjecttypen:
     get:
       operationId: zaakobjecttype_list
@@ -2855,9 +3524,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Zaakobjecttype'
+                $ref: '#/components/schemas/ResultsZaakobjecttype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -2882,6 +3549,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaakobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: zaakobjecttype_create
       description: "<body><p>Het vastleggen van een Roltype</p></body>"
@@ -2914,6 +3584,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -2932,6 +3604,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaakobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
   /zaakobjecttypen/{uuid}:
     delete:
       operationId: zaakobjecttypen_delete
@@ -2951,14 +3626,51 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"                    
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Zaakobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     get:
       operationId: zaakobjecttype_read
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Roltype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -2969,6 +3681,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -2991,6 +3709,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3009,6 +3729,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaakobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     patch:
       operationId: zaakobjecttype_partial_update
       description: "<body><p>Het deels bijwerken van een Roltype</p></body>"
@@ -3048,6 +3771,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3066,6 +3793,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaakobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
     put:
       operationId: zaakobjecttype_update
       description: "<body><p>Het bijwerken van een Roltype</p></body>"
@@ -3105,6 +3835,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3123,11 +3857,31 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaakobjecttypen
-  /zaakobjecttypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven      
+    head:
       operationId: zaakobjecttype_headers
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Roltype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -3138,6 +3892,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -3178,6 +3938,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaakobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
   /zaaktypeinformatieobjecttypen:
     get:
       operationId: zaaktypeinformatieobjecttype_list
@@ -3205,7 +3968,7 @@ paths:
             type: integer
         - in: query
           name: richting
-          description: "<body><p>Aanduiding van de richting van uitwisseling van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE, gezien vanuit de zaakbehandelende organisatie.</p></body><body><p> <strong>DEPRECATED</strong> </p></body>"
+          description: "<body><p>Aanduiding van de richting van uitwisseling van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken van het gerelateerde ZAAKTYPE, gezien vanuit de zaakbehandelende organisatie.</p></body>"
           required: false
           schema:
             $ref: "#/components/schemas/Richting"
@@ -3239,9 +4002,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ZaaktypeInformatieobjecttype'
+                $ref: '#/components/schemas/ResultsZaaktypeInformatieobjecttype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -3266,6 +4027,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypeinformatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: zaaktypeinformatieobjecttypen_create
       description: "<body><p>Het vastleggen van een zaaktypeinformatieobjecttype</p></body>"
@@ -3298,6 +4062,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3316,6 +4082,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypeinformatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
   /zaaktypeinformatieobjecttypen/{uuid}:
     delete:
       operationId: zaaktypeinformatieobjecttype_delete
@@ -3335,14 +4104,51 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"          
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Zaaktypeinformatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     get:
       operationId: zaaktypeinformatieobjecttype_read
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Roltype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -3353,6 +4159,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -3375,6 +4187,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3393,6 +4207,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypeinformatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     patch:
       operationId: zaaktypeinformatieobjecttypen_partial_update
       description: "<body><p>Het deels bijwerken van een Zaaktypeinformatieobjecttype</p></body>"
@@ -3432,6 +4249,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3450,6 +4271,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypeinformatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     put:
       operationId: zaaktypeinformatieobjecttype_update
       description: "<body><p>Het bijwerken van een Zaaktypeinformatieobjecttype</p></body>"
@@ -3489,6 +4313,10 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '404':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3507,11 +4335,31 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypeinformatieobjecttypen
-  /zaaktypeinformatieobjecttypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
+    head:
       operationId: zaaktypeinformatieobjecttype_headers
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Statustype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -3522,6 +4370,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -3562,6 +4416,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypeinformatieobjecttypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
   /zaaktypen:
     get:
       operationId: zaaktype_list
@@ -3614,9 +4471,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Zaaktype'
+                $ref: '#/components/schemas/ResultsZaaktype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -3641,6 +4496,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     post:
       operationId: zaaktype_create
       description: "<body><p>Het vastleggen van een Zaaktype</p></body>"
@@ -3673,6 +4531,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3691,6 +4551,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
   /zaaktypen/{uuid}:
     delete:
       operationId: zaaktype_delete
@@ -3710,14 +4573,51 @@ paths:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
+        '401':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+        '403':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"          
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+        '409':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+        '410':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+        '415':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+        '429':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+        '500':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
       tags: 
       - Zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     get:
       operationId: zaaktype_read
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen gegevens van een Catalogus retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -3728,6 +4628,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -3750,6 +4656,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
         '404':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3768,6 +4676,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen
     patch:
       operationId: zaaktype_partial_update
       description: "<body><p>Het deels bijwerken van een Zaaktype</p></body>"
@@ -3825,6 +4736,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
     put:
       operationId: zaaktype_update
       description: "<body><p>Het bijwerken van een Zaaktype</p></body>"
@@ -3882,11 +4796,31 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypen
-  /zaaktypen/{uuid}/head:
-    get:
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
+    head:
       operationId: zaaktype_headers
       description: "<body><p>Het bericht dat de JSON/REST API voor het ophalen van header gegevens van een Zaaktype retourneert.</p></body>"
-      parameters: 
+      parameters:
+        - name: If-None-Match
+          in: header
+          description: "Voer een voorwaardelijk verzoek uit. Deze header moet \xE9\xE9\
+            n of meerdere ETag-waardes bevatten van resources die de consumer gecached\
+            \ heeft. Indien de waarde van de ETag van de huidige resource voorkomt in\
+            \ deze set, dan antwoord de provider met een lege HTTP 304 request. Zie\
+            \ [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)\
+            \ voor meer informatie."
+          required: false
+          examples:
+            multipleValues:
+              summary: Meerdere ETag-waardes
+              value: '"79054025255fb1a26e4bc422aef54eb4", "e4d909c290d0fb1ca068ffaddf22cbd0"'
+            oneValue:
+              summary: "E\xE9n ETag-waarde"
+              value: '"79054025255fb1a26e4bc422aef54eb4"'
+          schema:
+            type: string      
         - in: path
           name: uuid
           description: ""
@@ -3897,6 +4831,12 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
+            ETag:
+              description: De ETag berekend op de response body JSON. Indien twee
+                resources exact dezelfde ETag hebben, dan zijn deze resources identiek
+                aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
+              schema:
+                type: string          
             api-version:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
             warning:
@@ -3937,6 +4877,9 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.lezen      
   /zaaktypen/{uuid}/publish:
     post:
       operationId: zaaktype_publish
@@ -3977,6 +4920,8 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+        '406':
+          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
         '409':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
         '410':
@@ -3995,8 +4940,39 @@ paths:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/default"
       tags: 
       - Zaaktypen
+      security:
+      - JWT-Claims:
+        - zaaktypes.schrijven
 components:
+  securitySchemes:
+    JWT-Claims:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
   schemas:
+    ResultsBesluittype:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Besluittype'
     Besluittype:
       type: "object"
       description: "<body><p>Generieke aanduiding van de aard van een besluit</p></body>"
@@ -4204,6 +5180,29 @@ components:
             \ twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek\
             \ aan elkaar. Je kan de ETag gebruiken om caching te implementeren.</p></body>"
           minLength: 1
+    ResultsCatalogus:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Catalogus'
     Catalogus:
       type: "object"
       description: "<body><p>De verzameling van ZAAKTYPEn - incl. daarvoor relevante\
@@ -4380,6 +5379,29 @@ components:
             \ twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek\
             \ aan elkaar. Je kan de ETag gebruiken om caching te implementeren.</p></body>"
           minLength: 1
+    ResultsEigenschap:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Eigenschap'
     Eigenschap:
       type: "object"
       description: "<body><p>Een relevant inhoudelijk gegeven dat bij ZAAKen van dit\
@@ -4445,7 +5467,7 @@ components:
           type: "string"
           format: "uri"
           readOnly: true
-          example: "datapunt.voorbeeldgemeente.nl/api/v1/zaaktypen/123456789"
+          example: "datapunt.voorbeeldgemeente.nl/api/v1//123456789"
     EigenschapRequestBody:
       type: "object"
       description: ""
@@ -4515,6 +5537,29 @@ components:
             \ twee resources exact dezelfde ETag hebben, dan zijn deze resources identiek\
             \ aan elkaar. Je kan de ETag gebruiken om caching te implementeren.</p></body>"
           minLength: 1
+    ResultsInformatieobjecttype:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Informatieobjecttype'
     Informatieobjecttype:
       type: "object"
       description: "<body><p>Aanduiding van de aard van INFORMATIEOBJECTen zoals gehanteerd\
@@ -4687,6 +5732,29 @@ components:
     InformatieobjecttypenRequestbodyPublish:
       type: "object"
       description: ""
+    ResultsResultaattype:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resultaattype'
     Resultaattype:
       type: "object"
       description: "<body><p>De indeling of groepering van resultaten van zaken van\
@@ -4925,6 +5993,29 @@ components:
           title: "ETag"
           description: ""
           minLength: 1
+    ResultsRoltype:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Roltype'
     Roltype:
       type: "object"
       description: "<body><p>Generieke aanduiding van de aard van een ROL die een\
@@ -5062,6 +6153,29 @@ components:
           title: "ETag"
           description: ""
           minLength: 1
+    ResultsStatustype:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Statustype'
     Statustype:
       type: "object"
       description: "<body><p>Generieke aanduiding van de aard van een STATUS</p></body>"
@@ -5237,6 +6351,29 @@ components:
           title: "ETag"
           description: ""
           minLength: 1
+    ResultsZaakobjecttype:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Zaakobjecttype'
     Zaakobjecttype:
       type: "object"
       description: "<body><p>De objecttypen van objecten waarop een zaak van het ZAAKTYPE\
@@ -5368,9 +6505,33 @@ components:
           title: "ETag"
           description: ""
           minLength: 1
-    Zaaktype:
+    ResultsZaaktype:
       type: "object"
       description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Zaaktype'
+    Zaaktype:
+      type: "object"
+      description: "<body><p>Specificatie van de wijze van besturing van, en vast\
+        \ te leggen informatie over een bedrijfsproces dat als zaak uitgevoerd wordt.</p></body>"
       required:
       - "aanleiding"
       - "concept"
@@ -5587,7 +6748,30 @@ components:
           type: "string"
           format: "uri"
           readOnly: true
-          example: "datapunt.voorbeeldgemeente.nl/api/v1/catalogussen/123456789"
+          example: "datapunt.voorbeeldgemeente.nl/api/v1/catalogussen/123456789"        
+    ResultsZaaktypeInformatieobjecttype:
+      type: "object"
+      description: ""
+      required:
+      - "count"
+      - "next"
+      - "previous"
+      - "results" 
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous: 
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZaaktypeInformatieobjecttype'
     ZaaktypeInformatieobjecttype:
       type: "object"
       description: ""
@@ -6647,8 +7831,7 @@ components:
       type: "string"
       description: "<body><p>Opsomming van de onderscheiden richtingen van uitwisseling\
         \ van informatieobjecten van het gerelateerde INFORMATIEOBJECTTYPE bij zaken\
-        \ van het gerelateerde ZAAKTYPE, gezien vanuit de zaakbehandelende organisatie..</p></body><body><p>\
-        \ <strong>DEPRECATED</strong> </p></body>"
+        \ van het gerelateerde ZAAKTYPE, gezien vanuit de zaakbehandelende organisatie..</p></body>"
       enum:
       - "Inkomend"
       - "Intern"
@@ -6668,7 +7851,7 @@ components:
       - "Initiator"
       - "Klantcontacter"
       - "Mede initiator"
-      - "Zaakco rdinator"
+      - "Zaakcoordinator"
     Status:
       type: "string"
       description: ""
