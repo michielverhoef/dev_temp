@@ -6381,7 +6381,7 @@ components:
       required:
       - "anderObjecttype"
       - "datumBeginGeldigheidZaakobjecttype"
-      - "isRelevantVoor"
+      - "zaaktype"
       - "catalogus"
       - "objecttype"
       - "relatieomschrijving"
@@ -6422,7 +6422,7 @@ components:
           format: "uri"
         uuid:
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/UUID"
-        isRelevantVoor:
+        zaaktype:
           title: "is relevant voor"
           description: "<body><p>Zaken van het ZAAKTYPE waarvoor objecten van dit\
             \ ZAAKOBJECTTYPE relevant zijn.</p></body>"
