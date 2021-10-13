@@ -4632,6 +4632,9 @@ tags:
     zaken van eenzelfde soort.'
 servers:
 # Added by API Auto Mocking Plugin
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/michielverhoef/Catalogussen_API/1.2.0-alpha
 - description: SwaggerHub API Auto Mocking
   url: https://virtserver.swaggerhub.com/michielverhoef/probeersel/1.2.0-alpha
 - url: /api/v1
@@ -5115,6 +5118,16 @@ components:
             format: uri
           readOnly: true
           uniqueItems: true
+        begindatumVersie:
+          type: "string"
+          title: "Begindatum versie"
+          description: "<body><p>Datum waarop de versie van de zaaktypecatalogus van\
+            \ toepassing is geworden.</p></body>"
+          format: "date"
+        versie:
+          type: "string"
+          title: "Versie"
+          description: "<body><p>Versie-aanduiding van de van toepassing zijnde zaaktypecatalogus.</p></body>"          
     EigenschapSpecificatie:
       title: Specificatie
       required:
@@ -5216,6 +5229,16 @@ components:
             EIGENSCHAP van belang is.
           type: string
           format: uri
+        beginGeldigheid:
+          type: "string"
+          title: "Datum begin geldigheid eigenschap"
+          description: "<body><p>De datum waarop de EIGENSCHAP is ontstaan.</p></body>"
+          format: "date"
+        eindeGeldigheid:
+          type: "string"
+          title: "Datum einde geldigheid eigenschap"
+          description: "<body><p>De datum waarop de EIGENSCHAP is opgeheven.</p></body>"
+          format: "date"
     InformatieObjectType:
       required:
       - catalogus
@@ -5239,12 +5262,22 @@ components:
             behoort.
           type: string
           format: uri
+        categorie:
+          type: "string"
+          title: "categorie"
+          description: "<body><p>Typering van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.</p></body>"
+          minLength: 1
         omschrijving:
           title: Omschrijving
           description: Omschrijving van de aard van informatieobjecten van dit INFORMATIEOBJECTTYPE.
           type: string
           maxLength: 80
           minLength: 1
+        omschrijvingGeneriek:
+          allOf:
+          - $ref: "#/components/schemas/Informatieobjecttype-omschrijvingGeneriek"
+          - title: "omschrijvingGeneriek"
+            description: "<body><p>Algemeen gehanteerde omschrijving van het INFORMATIEOBJECTTYPE.</p></body>"
         vertrouwelijkheidaanduiding:
           title: Vertrouwelijkheidaanduiding
           description: 'Aanduiding van de mate waarin informatieobjecten van dit INFORMATIEOBJECTTYPE
@@ -5297,6 +5330,84 @@ components:
             deze API.
           type: boolean
           readOnly: true
+    Informatieobjecttype-omschrijvingGeneriek:
+      type: "object"
+      description: "<body><p>Algemeen binnen de overheid gehanteerde omschrijvingen\
+        \ van de typen informatieobjecten</p></body><body><p>Deze 'lijst' bevat de\
+        \ benamingen van de generieke informatieobjecttypen die in de informatie-uitwisseling\
+        \ betrokken zijn. Het gaat telkens om een korte omschrijving van de aard van\
+        \ een informatieobject, ook wel 'documentnaam' genoemd, zoals deze landelijk\
+        \ binnen de overheid wordt toegepast op basis van de ZTC. De 'lijst' betreft\
+        \ dus geen informatieobjecttypen voor specifieke domeinen en ook geen organisatiespecifieke\
+        \ informatieobjecttypen.</p></body><body><p>Deze 'lijst' bevat de benamingen\
+        \ van de generieke informatieobjecttypen die in de informatie-uitwisseling\
+        \ betrokken zijn. Het gaat telkens om een korte omschrijving van de aard van\
+        \ een informatieobject, ook wel 'documentnaam' genoemd, zoals deze landelijk\
+        \ binnen de overheid wordt toegepast op basis van de ZTC. De 'lijst' betreft\
+        \ dus geen informatieobjecttypen voor specifieke domeinen en ook geen organisatiespecifieke\
+        \ informatieobjecttypen.</p></body>"
+      required:
+      - "beginGeldigheid"
+      - "definitie"
+      - "herkomst"
+      - "hierarchie"
+      - "informatieobjecttype"
+      properties:
+        beginGeldigheid:
+          type: string
+          format: date
+          nullable: true
+        eindeGeldigheid:
+          type: string
+          format: date
+          nullable: true
+        definitie:
+          type: "string"
+          title: "Definitie informatieobjecttype-omschrijving generiek"
+          description: "<body><p>Nauwkeurige beschrijving van het generieke type informatieobject</p></body>"
+          minLength: 1
+        herkomstInformatieobjecttypeOmschrijvingGeneriek:
+          type: "string"
+          title: "Herkomst informatieobjecttype-omschrijving generiek"
+          description: "<body><p>De naam van de waardenverzameling, of van de beherende\
+            \ organisatie daarvan, waaruit de waarde is overgenomen.</p></body><body><p>De\
+            \ kern van de waardenverzameling is overgenomen van de norm NEN2084 (herkomst:\
+            \ NEN2084). Deze is aangevuld met door KING als zinvol beoordeelde waarden\
+            \ (herkomst: KING).</p></body><body><p>De kern van de waardenverzameling\
+            \ is overgenomen van de norm NEN2084 (herkomst: NEN2084). Deze is aangevuld\
+            \ met door KING als zinvol beoordeelde waarden (herkomst: KING).</p></body>"
+          minLength: 1
+        hierarchie:
+          type: "string"
+          title: "Hierarchie"
+          description: "<body><p>De plaats in de rangorde van het informatieobjecttype.</p></body><body><p>Het\
+            \ betreft hier de plaats van het informatieobjecttype in of ten opzichte\
+            \ van de hierarchie van de informatieobjecttypen in de NEN2084. Een informatieobjecttype\
+            \ met een herkomst anders dan de NEN2084 komt pas vanaf niveau 2 in de\
+            \ hierarchie voor. Anders gezegd, de NEN2084 bepaalt de hoofdstructuur\
+            \ van de hierarchie.</p></body><body><p>Het betreft hier de plaats van\
+            \ het informatieobjecttype in of ten opzichte van de hierarchie van de\
+            \ informatieobjecttypen in de NEN2084. Een informatieobjecttype met een\
+            \ herkomst anders dan de NEN2084 komt pas vanaf niveau 2 in de hierarchie\
+            \ voor. Anders gezegd, de NEN2084 bepaalt de hoofdstructuur van de hierarchie.</p></body>"
+          minLength: 1
+        informatieobjecttype:
+          type: "string"
+          title: "Informatieobjecttype"
+          description: "<body><p>Algemeen gehanteerde omschrijving van het type informatieobject.</p></body>"
+          minLength: 1
+        opmerking:
+          type: "string"
+          title: "Opmerking informatieobjecttype-omschrijving generiek"
+          description: "<body><p>Zinvolle toelichting bij het informatieobjecttype</p></body><body><p>Het\
+            \ betreft vooral toelichting over het correct kunnen gebruiken van de\
+            \ informatieobjecttypen. Een voorbeeld is het op enig moment vervangen\
+            \ zijn van een informatieobjecttype door een ander informatieobjecttype\
+            \ d.w.z. het van naam veranderd zijn van het informatieobjecttype.</p></body><body><p>Het\
+            \ betreft vooral toelichting over het correct kunnen gebruiken van de\
+            \ informatieobjecttypen. Een voorbeeld is het op enig moment vervangen\
+            \ zijn van een informatieobjecttype door een ander informatieobjecttype\
+            \ d.w.z. het van naam veranderd zijn van het informatieobjecttype.</p></body>"          
     BrondatumArchiefprocedure:
       title: Brondatum archiefprocedure
       description: Specificatie voor het bepalen van de brondatum voor de start van
