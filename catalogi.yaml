@@ -1904,6 +1904,14 @@ paths:
         required: false
         schema:
           type: integer
+      - name: catalogus
+        in: query
+        description: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
+          behoort.
+        required: false
+        schema:
+          type: string
+          format: uri          
       responses:
         '200':
           description: OK
@@ -2340,6 +2348,14 @@ paths:
         required: true
         schema:
           type: string
+      - name: catalogus
+        in: query
+        description: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
+          behoort.
+        required: false
+        schema:
+          type: string
+          format: uri          
       responses:
         '200':
           description: OK
@@ -2753,6 +2769,14 @@ paths:
         required: false
         schema:
           type: integer
+      - name: catalogus
+        in: query
+        description: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
+          behoort.
+        required: false
+        schema:
+          type: string
+          format: uri          
       responses:
         '200':
           description: OK
@@ -3152,17 +3176,19 @@ paths:
             type: string
             format: uri
         - in: query
-          name: datumbegingeldigheidzaakobjecttype
+          name: begingeldigheid
           description: "<body><p>De datum waarop het ZAAKOBJECTTYPE is ontstaan.</p></body>"
           required: true
           schema:
-            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/DatumOnvolledig"
+            type: string
+            format: date
         - in: query
-          name: datumeindegeldigheidzaakobjecttype
+          name: eindegeldigheid
           description: "<body><p>De datum waarop het ZAAKOBJECTTYPE is opgeheven.</p></body>"
           required: false
           schema:
-            $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/DatumOnvolledig"
+            type: string
+            format: date
         - in: query
           name: objecttype
           description: "<body><p>De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben.</p></body>"
@@ -3184,10 +3210,13 @@ paths:
             format: uri
       responses:
         '200':
-          description: "Zoekactie geslaagd"
+          description: "OK"
           headers:
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             warning:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
             X-Rate-Limit-Limit:
@@ -3217,7 +3246,7 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: '#/components/schemas/BesluitType'
+                      $ref: '#/components/schemas/Zaakobjecttype'
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
@@ -3247,7 +3276,7 @@ paths:
         - catalogi.lezen
     post:
       operationId: zaakobjecttype_create
-      description: "<body><p>Het vastleggen van een Roltype</p></body>"
+      description: "<body><p>Het vastleggen van een Zaakobjecttype</p></body>"
       parameters:
       - name: Content-Type
         in: header
@@ -3272,8 +3301,11 @@ paths:
                 type: string
                 format: uri
                 example: '/zaakobjecttypen/'
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             warning:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
           content:
@@ -3324,8 +3356,11 @@ paths:
         '200':
           description: "Verwijderactie geslaagd"
           headers:
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
         '204':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
         '401':
@@ -3389,8 +3424,11 @@ paths:
                 aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
               schema:
                 type: string          
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             warning:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
             X-Rate-Limit-Limit:
@@ -3461,8 +3499,11 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             warning:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
             X-Rate-Limit-Limit:
@@ -3533,8 +3574,11 @@ paths:
         '200':
           description: "Zoekactie geslaagd"
           headers:
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             warning:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
             X-Rate-Limit-Limit:
@@ -3616,8 +3660,11 @@ paths:
                 aan elkaar. Je kan de ETag gebruiken om caching te implementeren.
               schema:
                 type: string          
-            api-version:
-              $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/api_version"
+            API-version:
+              schema:
+                type: string
+              description: 'Geeft een specifieke API-versie aan in de context van
+                een specifieke aanroep. Voorbeeld: 1.2.1.'
             warning:
               $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/headers/warning"
             X-Rate-Limit-Limit:
@@ -3706,6 +3753,14 @@ paths:
         required: false
         schema:
           type: integer
+      - name: catalogus
+        in: query
+        description: URL-referentie naar de CATALOGUS waartoe dit INFORMATIEOBJECTTYPE
+          behoort.
+        required: false
+        schema:
+          type: string
+          format: uri          
       responses:
         '200':
           description: OK
@@ -6249,7 +6304,7 @@ components:
         \ betrekking kan hebben.</p></body>"
       required:
       - "anderObjecttype"
-      - "datumBeginGeldigheidZaakobjecttype"
+      - "beginGeldigheid"
       - "zaaktype"
       - "catalogus"
       - "objecttype"
@@ -6261,27 +6316,25 @@ components:
           title: "Ander objecttype"
           description: "<body><p>Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE\
             \ een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft</p></body>"
-        datumBeginGeldigheidZaakobjecttype:
-          type: "string"
+        beginGeldigheid:
+          type: string
           title: "Datum begin geldigheid zaakobjecttype"
           description: "<body><p>De datum waarop het ZAAKOBJECTTYPE is ontstaan.</p></body>"
-          format: "date"
-        datumEindeGeldigheidZaakobjecttype:
-          type: "string"
+          format: date
+        eindeGeldigheid:
+          type: string
           title: "Datum einde geldigheid zaakobjecttype"
           description: "<body><p>De datum waarop het ZAAKOBJECTTYPE is opgeheven.</p></body>"
-          format: "date"
+          format: date
         objecttype:
           type: "string"
           title: "Objecttype"
-          description: "<body><p>De naam van het objecttype waarop zaken van het gerelateerde\
-            \ ZAAKTYPE betrekking hebben.</p></body>"
+          description: "<body><p>De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben.</p></body>"
           minLength: 1
         relatieomschrijving:
           type: "string"
           title: "Relatieomschrijving"
-          description: "<body><p>Omschrijving van de betrekking van het Objecttype\
-            \ op zaken van het gerelateerde ZAAKTYPE.</p></body>"
+          description: "<body><p>Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE.</p></body>"
           minLength: 1
         url:
           type: "string"
@@ -6291,14 +6344,13 @@ components:
           readOnly: true          
         zaaktype:
           title: "is relevant voor"
-          description: "<body><p>Zaken van het ZAAKTYPE waarvoor objecten van dit\
-            \ ZAAKOBJECTTYPE relevant zijn.</p></body>"
+          description: "<body><p>Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant zijn.</p></body>"
           type: "string"
           format: "uri"
           readOnly: true
           example: "datapunt.voorbeeldgemeente.nl/api/v1/zaaktypen/123456789"
         catalogus:
-          title: "maaktDeelUitVan"
+          title: "catalogus"
           description: ""
           type: "string"
           format: "uri"
