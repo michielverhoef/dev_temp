@@ -3203,7 +3203,7 @@ paths:
             type: string
         - in: query
           name: zaaktype
-          description: ""
+          description: "URL-referentie naar het ZAAKTYPE."
           required: true
           schema:
             type: string
@@ -3353,16 +3353,14 @@ paths:
           schema:
             $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/UUID"
       responses:
-        '200':
-          description: "Verwijderactie geslaagd"
+        '204':
+          description: "No Content"
           headers:
             API-version:
               schema:
                 type: string
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
-        '204':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/204"
         '401':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
         '403':
@@ -3416,7 +3414,7 @@ paths:
             $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/UUID"
       responses:
         '200':
-          description: "Zoekactie geslaagd"
+          description: "OK"
           headers:
             ETag:
               description: De ETag berekend op de response body JSON. Indien twee
@@ -3497,7 +3495,7 @@ paths:
                 $ref: '#/components/schemas/Zaakobjecttype'
       responses:
         '200':
-          description: "Zoekactie geslaagd"
+          description: "OK"
           headers:
             API-version:
               schema:
@@ -3572,7 +3570,7 @@ paths:
                 $ref: '#/components/schemas/Zaakobjecttype'
       responses:
         '200':
-          description: "Zoekactie geslaagd"
+          description: "OK"
           headers:
             API-version:
               schema:
@@ -3652,7 +3650,7 @@ paths:
             $ref: "https://raw.githubusercontent.com/VNG-Realisatie/API-Kennisbank/master/common/Generieke-Datatypen-Gemeenten.yaml#/components/schemas/UUID"
       responses:
         '200':
-          description: "Zoekactie geslaagd"
+          description: "OK"
           headers:
             ETag:
               description: De ETag berekend op de response body JSON. Indien twee
@@ -6303,19 +6301,16 @@ components:
       description: "<body><p>De objecttypen van objecten waarop een zaak van het ZAAKTYPE\
         \ betrekking kan hebben.</p></body>"
       required:
-      - "anderObjecttype"
       - "beginGeldigheid"
       - "zaaktype"
       - "catalogus"
       - "objecttype"
       - "relatieomschrijving"
-      - "url"
       properties:
         anderObjecttype:
           type: "boolean"
           title: "Ander objecttype"
-          description: "<body><p>Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE\
-            \ een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft</p></body>"
+          description: "<body><p>Aanduiding waarmee wordt aangegeven of het ZAAKOBJECTTYPE een ander, niet in RSGB en RGBZ voorkomend, objecttype betreft</p></body>"
         beginGeldigheid:
           type: string
           title: "Datum begin geldigheid zaakobjecttype"
