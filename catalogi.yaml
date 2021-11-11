@@ -5848,6 +5848,11 @@ components:
           description: "Aanduiding die aangeeft of na het zetten van een STATUS van\
             \ dit STATUSTYPE de Initiator moet worden ge\xEFnformeerd over de statusovergang."
           type: boolean
+        doorlooptijd:
+          title: Doorlooptijd
+          description: De door de zaakbehandelende organisatie(s) gestelde norm voor de doorlooptijd voor het bereiken van STATUSsen van dit STATUSTYPE bij het desbetreffende ZAAKTYPE.
+          type: string
+          format: duration          
     ZaakTypeInformatieObjectType:
       required:
       - zaaktype
@@ -6296,6 +6301,15 @@ components:
             deze API.
           type: boolean
           readOnly: true
+        zaakobjecttypen:
+          description: De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
+          type: array
+          items:
+            description: De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
+            type: string
+            format: uri
+            nullable: true
+          uniqueItems: true
     Zaakobjecttype:
       type: "object"
       description: "<body><p>De objecttypen van objecten waarop een zaak van het ZAAKTYPE\
@@ -6338,14 +6352,14 @@ components:
           format: "uri"
           readOnly: true          
         zaaktype:
-          title: "is relevant voor"
+          title: "Zaaktype"
           description: "<body><p>Zaken van het ZAAKTYPE waarvoor objecten van dit ZAAKOBJECTTYPE relevant zijn.</p></body>"
           type: "string"
           format: "uri"
           readOnly: true
           example: "datapunt.voorbeeldgemeente.nl/api/v1/zaaktypen/123456789"
         catalogus:
-          title: "catalogus"
+          title: "Catalogus"
           description: ""
           type: "string"
           format: "uri"
