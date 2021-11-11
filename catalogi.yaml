@@ -5853,6 +5853,10 @@ components:
           description: De door de zaakbehandelende organisatie(s) gestelde norm voor de doorlooptijd voor het bereiken van STATUSsen van dit STATUSTYPE bij het desbetreffende ZAAKTYPE.
           type: string
           format: duration          
+        checklistitemStatustype:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ChecklistitemStatustype"          
     ZaakTypeInformatieObjectType:
       required:
       - zaaktype
@@ -6365,3 +6369,39 @@ components:
           format: "uri"
           readOnly: true
           example: "datapunt.voorbeeldgemeente.nl/api/v1/catalogussen/123456789"
+    ChecklistitemStatustype:
+      type: "object"
+      description: "<body><p>Door één of meer checklistitems op te nemen bij een\
+        \ status, wordt een checklist verkregen met punten waaraan aandacht besteed\
+        \ moet worden teneinde die status te bereiken.</p></body><body><p>Door éÜ
+        ©n of meer checklistitems op te nemen bij een status, wordt een checklist\
+        \ verkregen met punten waaraan aandacht besteed moet worden teneinde die status\
+        \ te bereiken.</p></body>"
+      required:
+      - "itemnaam"
+      - "verplicht"
+      - "vraagstelling"
+      properties:
+        itemnaam:
+          type: "string"
+          title: "Itemnaam"
+          description: "De betekenisvolle benaming van het checklistitem"
+          minLength: 1
+        toelichting:
+          type: "string"
+          title: "Toelichting"
+          description: "Beschrijving van de overwegingen bij het controleren\
+            \ van het aandachtspunt"
+        verplicht:
+          type: "boolean"
+          title: "Verplicht"
+          description: "Het al dan niet verplicht zijn van controle van het\
+            \ aandachtspunt voorafgaand aan het bereiken van de status van het gerelateerde\
+            \ STATUSTYPE."
+        vraagstelling:
+          type: "string"
+          title: "Vraagstelling"
+          description: "Een betekenisvolle vraag waaruit blijkt waarop het\
+            \ aandachtspunt gecontroleerd moet worden."
+          minLength: 1
+        
