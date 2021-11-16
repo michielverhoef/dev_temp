@@ -6465,6 +6465,18 @@ components:
           type: "string"
           format: "uri"
           example: "datapunt.voorbeeldgemeente.nl/api/v1/zaaktypen/123456789"
+        resultaattype:
+          title: "Resultaattype"
+          description: "De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet"
+          type: "string"
+          format: "uri"
+          example: "datapunt.voorbeeldgemeente.nl/api/v1/resultaattypen/123456789"
+        statustype:
+          title: "Statustype"
+          description: "De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van het ZAAKTYPE voordat een STATUS van dit STATUSTYPE kan worden gezet."
+          type: "string"
+          format: "uri"
+          example: "datapunt.voorbeeldgemeente.nl/api/v1/statustypen/123456789"          
         catalogus:
           title: "Catalogus"
           description: ""
