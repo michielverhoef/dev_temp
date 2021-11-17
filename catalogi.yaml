@@ -6492,14 +6492,13 @@ components:
           format: date
         objecttype:
           type: "string"
+          format: "uri"          
           title: "Objecttype"
-          description: "<body><p>De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben.</p></body>"
-          minLength: 1
+          description: URL naar De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben
         relatieomschrijving:
           type: "string"
           title: "Relatieomschrijving"
           description: "<body><p>Omschrijving van de betrekking van het Objecttype op zaken van het gerelateerde ZAAKTYPE.</p></body>"
-          minLength: 1
         url:
           type: "string"
           title: "url"
