@@ -3250,19 +3250,23 @@ paths:
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+          $ref: '#/components/responses/401'
         '403':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
         '409':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+          $ref: '#/components/responses/409'
         '410':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+          $ref: '#/components/responses/410'
         '415':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+          $ref: '#/components/responses/415'
         '429':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+          $ref: '#/components/responses/429'
         '500':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
+          $ref: '#/components/responses/500'          
         '501':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/501"
         '503':
@@ -3315,21 +3319,23 @@ paths:
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+          $ref: '#/components/responses/401'
         '403':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
         '406':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
+          $ref: '#/components/responses/406'
         '409':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+          $ref: '#/components/responses/409'
         '410':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+          $ref: '#/components/responses/410'
         '415':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+          $ref: '#/components/responses/415'
         '429':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+          $ref: '#/components/responses/429'
         '500':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
+          $ref: '#/components/responses/500'                    
         '501':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/501"
         '503':
@@ -3362,23 +3368,23 @@ paths:
               description: 'Geeft een specifieke API-versie aan in de context van
                 een specifieke aanroep. Voorbeeld: 1.2.1.'
         '401':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+          $ref: '#/components/responses/401'
         '403':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"                    
+          $ref: '#/components/responses/403'
         '404':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+          $ref: '#/components/responses/404'
         '406':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"
+          $ref: '#/components/responses/406'
         '409':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+          $ref: '#/components/responses/409'
         '410':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+          $ref: '#/components/responses/410'
         '415':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+          $ref: '#/components/responses/415'
         '429':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+          $ref: '#/components/responses/429'
         '500':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
+          $ref: '#/components/responses/500'                          
       tags: 
       - zaakobjecttypen
       security:
@@ -3442,23 +3448,23 @@ paths:
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+          $ref: '#/components/responses/401'
         '403':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+          $ref: '#/components/responses/403'
         '404':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+          $ref: '#/components/responses/404'
         '406':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
+          $ref: '#/components/responses/406'
         '409':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+          $ref: '#/components/responses/409'
         '410':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+          $ref: '#/components/responses/410'
         '415':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+          $ref: '#/components/responses/415'
         '429':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+          $ref: '#/components/responses/429'
         '500':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
+          $ref: '#/components/responses/500'          
         '501':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/501"
         '503':
@@ -3517,23 +3523,23 @@ paths:
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+          $ref: '#/components/responses/401'
         '403':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+          $ref: '#/components/responses/403'
         '404':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+          $ref: '#/components/responses/404'
         '406':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
+          $ref: '#/components/responses/406'
         '409':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+          $ref: '#/components/responses/409'
         '410':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+          $ref: '#/components/responses/410'
         '415':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+          $ref: '#/components/responses/415'
         '429':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+          $ref: '#/components/responses/429'
         '500':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
+          $ref: '#/components/responses/500'                    
         '501':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/501"
         '503':
@@ -3592,23 +3598,23 @@ paths:
         '400':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/400"
         '401':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/401"
+          $ref: '#/components/responses/401'
         '403':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/403"
+          $ref: '#/components/responses/403'
         '404':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/404"
+          $ref: '#/components/responses/404'
         '406':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/406"          
+          $ref: '#/components/responses/406'
         '409':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/409"
+          $ref: '#/components/responses/409'
         '410':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/410"
+          $ref: '#/components/responses/410'
         '415':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/415"
+          $ref: '#/components/responses/415'
         '429':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/429"
+          $ref: '#/components/responses/429'
         '500':
-          $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/500"
+          $ref: '#/components/responses/500'          
         '501':
           $ref: "https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-common/v1.3.0/api-specificatie/common.yaml#/components/responses/501"
         '503':
@@ -4985,6 +4991,15 @@ components:
             deze API.
           type: boolean
           readOnly: true
+        resultaattypen:
+          description: nieuw 1.2.0 Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE
+          type: array
+          items:
+            description: Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE
+            type: string
+            format: uri
+          uniqueItems: true
+          readOnly: true
     Fout:
       required:
       - code
@@ -5171,16 +5186,20 @@ components:
             format: uri
           readOnly: true
           uniqueItems: true
+        naam: 
+          type: "string"
+          title: "Naam"
+          description: Nieuw 1.2.0 De benaming die is gegeven aan de zaaktypecatalogus
         begindatumVersie:
           type: "string"
           title: "Begindatum versie"
-          description: "<body><p>Datum waarop de versie van de zaaktypecatalogus van\
+          description: "Nieuw 1.2.0 <body><p>Datum waarop de versie van de zaaktypecatalogus van\
             \ toepassing is geworden.</p></body>"
           format: "date"
         versie:
           type: "string"
           title: "Versie"
-          description: "<body><p>Versie-aanduiding van de van toepassing zijnde zaaktypecatalogus.</p></body>"          
+          description: Nieuw 1.2.0 Versie-aanduiding van de van toepassing zijnde zaaktypecatalogus
     EigenschapSpecificatie:
       title: Specificatie
       required:
@@ -5292,12 +5311,12 @@ components:
         beginGeldigheid:
           type: "string"
           title: "Datum begin geldigheid eigenschap"
-          description: "<body><p>De datum waarop de EIGENSCHAP is ontstaan.</p></body>"
+          description: Nieuw 1.2.0 De datum waarop de EIGENSCHAP is ontstaan
           format: "date"
         eindeGeldigheid:
           type: "string"
           title: "Datum einde geldigheid eigenschap"
-          description: "<body><p>De datum waarop de EIGENSCHAP is opgeheven.</p></body>"
+          description: Nieuw 1.2.0 De datum waarop de EIGENSCHAP is opgeheven
           format: "date"
     InformatieObjectType:
       required:
@@ -5407,6 +5426,16 @@ components:
             niet-definitieve versies en zouden niet gebruikt moeten worden buiten
             deze API.
           type: boolean
+          readOnly: true
+        zaaktypen:
+          title: Zaaktypen
+          description: Nieuw 1.2.0 URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE
+          type: array
+          items:
+            description: URL-referenties naar De INFORMATIEOBJECTTYPEn die relevant kunnen zijn voor ZAAKen van dit ZAAKTYPE
+            type: string
+            format: uri
+          uniqueItems: true
           readOnly: true
     Informatieobjecttype-omschrijvingGeneriek:
       type: "object"
@@ -5659,7 +5688,7 @@ components:
           maxLength: 80
         procestermijn:
           title: Procestermijn
-          description: De periode dat het zaakdossier na afronding van de zaak actief
+          description: DEPRECATED. Dit attribuut is per abuis opgenomen in Brondatum archiefprocedure! De periode dat het zaakdossier na afronding van de zaak actief
             gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening
             van de organisatie. Enkel relevant indien de afleidingswijze 'termijn'
             is.
@@ -5762,20 +5791,38 @@ components:
           $ref: '#/components/schemas/BrondatumArchiefprocedure'
         catalogus:
           title: Catalogus
-          description: URL-referentie naar de CATALOGUS waartoe dit RESULTAATTYPE behoort.
+          description: Nieuw 1.2.0 URL-referentie naar de CATALOGUS waartoe dit RESULTAATTYPE behoort.
           type: string
           format: uri
         beginGeldigheid:
           title: Begin geldigheid
-          description: De datum waarop het is ontstaan.
+          description: Nieuw 1.2.0 De datum waarop het is ontstaan.
           type: string
           format: date
         eindeGeldigheid:
           title: Einde geldigheid
-          description: De datum waarop het is opgeheven.
+          description: Nieuw 1.2.0 De datum waarop het is opgeheven.
           type: string
           format: date
           nullable: true
+        indicatieSpecifiek: 
+          title: Indicatie specifiek
+          description: Nieuw 1.2.0 Aanduiding of het, vanuit archiveringsoptiek, een resultaattype betreft dat specifiek is voor een bepaalde procesobjectaard
+          type: boolean
+        procestermijn:
+          title: Procestermijn
+          description:	Nieuw 1.2.0 De periode dat het zaakdossier na afronding van de zaak actief gebruikt en/of geraadpleegd wordt ter ondersteuning van de taakuitoefening van de organisatie. NB voorheen per abuis opgenomen als attribuut van Brondatum archiefprocedure.
+          type: string
+          format: duration
+          nullable: true          
+        besluittypen:
+          description: Nieuw 1.2.0 Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE
+          type: array
+          items:
+            description: Het BESLUITTYPE van besluiten die gepaard gaan met resultaten van het RESULTAATTYPE
+            type: string
+            format: uri
+          uniqueItems: true          
     RolType:
       required:
       - zaaktype
@@ -6397,13 +6444,13 @@ components:
           readOnly: true
         verantwoordelijke:
           title: Verantwoordelijke
-          description: URL-referentie naar de (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE.
+          description: Nieuw 1.2.0 URL-referentie naar de (soort) organisatorische eenheid of (functie van) medewerker die verantwoordelijk is voor de uitvoering van zaken van het ZAAKTYPE.
           type: string
           format: uri
           maxLength: 1000
           minLength: 1          
         zaakobjecttypen:
-          description: De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
+          description: Nieuw 1.2.0 De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
           type: array
           items:
             description: De objecttypen van objecten waarop een zaak van het ZAAKTYPE betrekking kan hebben.
@@ -6468,21 +6515,27 @@ components:
         resultaattype:
           title: "Resultaattype"
           description: "De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van dit ZAAKTYPE voordat een resultaat van dit RESULTAATTYPE kan worden gezet"
-          type: "string"
-          format: "uri"
-          example: "datapunt.voorbeeldgemeente.nl/api/v1/resultaattypen/123456789"
+          type: array
+          items:
+            description: ZAAKTYPE met ZAAKen die relevant kunnen zijn voor dit BESLUITTYPE
+            type: string
+            format: uri
+            example: "datapunt.voorbeeldgemeente.nl/api/v1/resultaattypen/123456789"
+          uniqueItems: true
+          readOnly: true
         statustype:
           title: "Statustype"
           description: "De ZAAKOBJECTTYPEn die verplicht gerelateerd moeten zijn aan ZAAKen van het ZAAKTYPE voordat een STATUS van dit STATUSTYPE kan worden gezet."
           type: "string"
-          format: "uri"
-          example: "datapunt.voorbeeldgemeente.nl/api/v1/statustypen/123456789"          
+          example: "datapunt.voorbeeldgemeente.nl/api/v1/statustypen/123456789"   
+          readOnly: true
         catalogus:
           title: "Catalogus"
           description: ""
           type: "string"
           format: "uri"
           example: "datapunt.voorbeeldgemeente.nl/api/v1/catalogussen/123456789"
+          readOnly: true
     ChecklistitemStatustype:
       type: "object"
       description: "<body><p>Door één of meer checklistitems op te nemen bij een\
@@ -6520,7 +6573,7 @@ components:
           minLength: 1
     Broncatalogus:
       type: "object"
-      description: De CATALOGUS waaraan het ZAAKTYPE is ontleend.
+      description: Nieuw 1.2.0 De CATALOGUS waaraan het ZAAKTYPE is ontleend.
       required:
       - "url"
       properties:
@@ -6545,7 +6598,7 @@ components:
           minLength: 9
     Bronzaaktype:
       type: "object"
-      description: Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.
+      description: Nieuw 1.2.0 Het zaaktype binnen de CATALOGUS waaraan dit ZAAKTYPE is ontleend.
       required:
       - "url"
       properties:
