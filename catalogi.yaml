@@ -6494,7 +6494,7 @@ components:
           type: "string"
           format: "uri"          
           title: "Objecttype"
-          description: URL naar De naam van het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben
+          description: URL naar het objecttype waarop zaken van het gerelateerde ZAAKTYPE betrekking hebben
         relatieomschrijving:
           type: "string"
           title: "Relatieomschrijving"
