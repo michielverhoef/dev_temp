@@ -5789,6 +5789,15 @@ components:
           nullable: true
         brondatumArchiefprocedure:
           $ref: '#/components/schemas/BrondatumArchiefprocedure'
+        processobjectaard:
+          title: Processobjectaard
+          description: "Nieuw 1.2.0 Omschrijving van het object, subject of gebeurtenis waarop, vanuit archiveringsoptiek, het resultaattype bij zaken van dit type betrekking heeft.\
+          In de Gemeentelijke Selectielijst 2017 is het archiefregime van een (zaak)dossier per procestype afhankelijk van\
+          niet alleen het resultaat van het proces maar ook van het 'Procesobject'. Dat is daarin omschreven als 'Het \ onderwerp waarop een zaak betrekking heeft en wat verandert door het proces. Dit onderwerp is een object, subject of gebeurtenis ten aanzien waarvan een verandering plaatsvindt en dat gemonitord kan worden.' Met de attribuutsoort 'Procesobjectaard' wordt de aard van het object (of objecten) gespecificeerd dat invulling geeft aan het zojuist genoemde object, subject en gebeurtenis. In de Selectielijst betreft dit de vermeldingen in de kolom 'Omschrijving' (van procesobject). Meerdere procesobjectaarden kunnen vermeld worden.\ 
+Tesamen met 'Resultaatomschrijving' identificeert het uniek een Resultaattype bij een Zaaktype. De Gemeentelijke\ Selectielijst 2017 kent twee soorten resultaten: generiek en specifiek. Een specifieke resultaatsoort heeft betrekking\ op één of meer specifieke procesobjectaarden bij het resultaat. Een generieke resultaatsoort heeft betrekking op alle\ niet specifiek genoemde procesobjectaarden bij hetzelfde resultaat. Afhankelijk van het soort resultaat (attribuutsoort\ 'Indicatie specifiek') moet de attributsoort dus van een waarde voorzien worden. Voor generieke resultaatsoorten\ benoemt de Selectielijst geen aard van een object; de waarde van 'Procesobjectaard' zal dan veelal 'overig' zijn.
+Een voorbeeld van een waarde van deze attribuutsoort is 'Reisdocument, identiteitsbewijs' (bij specifieke resultaatsoort van resultaat 'Geleverd')."
+          type: string
+          maxLength: 200        
         catalogus:
           title: Catalogus
           description: Nieuw 1.2.0 URL-referentie naar de CATALOGUS waartoe dit RESULTAATTYPE behoort.
