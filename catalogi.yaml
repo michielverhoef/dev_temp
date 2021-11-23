@@ -5400,15 +5400,16 @@ components:
           minLength: 1
         besluittypen:
           title: Besluittypen
-          description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
+          description: Nieuw in 1.2.0 URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
             waarin besluiten van dit BESLUITTYPE worden vastgelegd.
           type: array
           items:
-            description: URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
+            description: Nieuw in 1.2.0 URL-referenties naar het INFORMATIEOBJECTTYPE van informatieobjecten
               waarin besluiten van dit BESLUITTYPE worden vastgelegd.
             type: string
             format: uri
-          uniqueItems: true          
+          uniqueItems: true
+          readOnly: true
         beginGeldigheid:
           title: Begin geldigheid
           description: De datum waarop het is ontstaan.
